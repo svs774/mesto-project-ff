@@ -13,8 +13,8 @@ const cardTemplate = document.querySelector("#card-template").content;
 
 function addCard(data, { deleteCard }) {
   const card = cardTemplate.cloneNode(true);
-  let cardImage = card.querySelector(".card__image");
-  let cardTitle = card.querySelector(".card__title");
+  const cardImage = card.querySelector(".card__image");
+  const cardTitle = card.querySelector(".card__title");
   const deleteBtn = card.querySelector(".card__delete-button");
 
   cardTitle.textContent = data.name;
