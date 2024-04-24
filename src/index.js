@@ -12,7 +12,6 @@ const nameInput = document.querySelector(".popup__input_type_name");
 const jobInput = document.querySelector(".popup__input_type_description");
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
-const buttonOpenEditProfileForm = document.querySelector(".popup__button");
 const popupNewCard = document.querySelector(".popup_type_new-card");
 const openProfileAddBtn = document.querySelector(".profile__add-button");
 const placeName = document.querySelector(".popup__input_type_card-name");
@@ -20,11 +19,12 @@ const link = document.querySelector(".popup__input_type_url");
 const popupImage = document.querySelector(".popup__image");
 const popupCaption = document.querySelector(".popup__caption");
 const popupTypeImage = document.querySelector(".popup_type_image");
-const cardImage = document.querySelector(".card__image");
 const closeButtons = document.querySelectorAll(".popup__close");
 const cardForm = document.querySelector("#new-place");
 
 openProfileBtn.addEventListener("click", function () {
+  nameInput.value = profileTitle.textContent;
+  jobInput.value = profileDescription.textContent;
   openPopup(popupProfile);
 });
 
@@ -37,9 +37,6 @@ openProfileAddBtn.addEventListener("click", function () {
 initialCards.forEach(function (data) {
   const card = addCard(data, { deleteCard, toggleLikeActive, openImagePopup });
   placesList.appendChild(card);
-
-  nameInput.value = profileTitle.textContent;
-  jobInput.value = profileDescription.textContent;
 });
 
 // Функция обработчик события для формы редактирования профиля
@@ -52,12 +49,11 @@ function submitEditProfileForm(evt) {
 
   profileTitle.textContent = name;
   profileDescription.textContent = job;
+
+  closePopup(popupProfile);
 }
 
 formElement.addEventListener("submit", submitEditProfileForm);
-buttonOpenEditProfileForm.addEventListener("click", function () {
-  closePopup(popupProfile);
-});
 
 // Функция добавления карточки с помощью формы
 
