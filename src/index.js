@@ -7,7 +7,7 @@ import { openPopup, closePopup } from "./components/modal";
 const placesList = document.querySelector(".places__list");
 const openProfileBtn = document.querySelector(".profile__edit-button");
 const popupProfile = document.querySelector(".popup_type_edit");
-const formElement = document.querySelector(".popup__form");
+const formEditProfile = document.querySelector("#edit-profile");
 const nameInput = document.querySelector(".popup__input_type_name");
 const jobInput = document.querySelector(".popup__input_type_description");
 const profileTitle = document.querySelector(".profile__title");
@@ -53,7 +53,8 @@ function submitEditProfileForm(evt) {
   closePopup(popupProfile);
 }
 
-formElement.addEventListener("submit", submitEditProfileForm);
+formEditProfile.addEventListener("submit", submitEditProfileForm);
+cardForm.addEventListener("submit", submitEditProfileForm);
 
 // Функция добавления карточки с помощью формы
 

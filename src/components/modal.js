@@ -21,8 +21,8 @@ export function closePopupOut(event) {
 
 // Функция для закрытия модальных окон по нажатию на кнопку Esc
 function closePopupByEsc(evt) {
-  const popups = document.querySelector(".popup.popup_is-opened");
   if (evt.key === "Escape") {
-    closePopup(popups);
+    const popup = document.querySelector(".popup_is-opened");
+    closePopup(popup);
   }
 }
