@@ -10,6 +10,10 @@ export function closePopup(popup) {
   popup.classList.remove("popup_is-opened");
   document.removeEventListener("click", closePopupOut);
   document.removeEventListener("keydown", closePopupByEsc);
+  const forms = document.querySelectorAll(".popup__form");
+  forms.forEach((form) => {
+    form.reset();
+  });
 }
 
 // Функция для закрытия модального окна по клику вне его

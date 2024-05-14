@@ -14,6 +14,14 @@
   margin-top: 48px;
 }
 
+.popup__submit_inactive {
+  color: #000;
+  background: #fff;
+  opacity: 20%;
+  border: 1px solid #000;
+  border-radius: 2px;
+}
+
 .popup__button:hover {
   background: rgba(0, 0, 0, 0.8);
   cursor: pointer;
@@ -25,3 +33,8 @@
     line-height: 17px;
   }
 }
+
+
+
+
+
