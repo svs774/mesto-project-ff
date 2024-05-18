@@ -1,13 +1,4 @@
-
-
-const validationConfig = {
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__button',
-    inactiveButtonClass: 'popup__submit_inactive',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__error_visible'
-  }; 
+import { validationConfig } from "../index";
 
 
   // Функция, которая добавляет класс с ошибкой
@@ -28,8 +19,9 @@ const hideInputError = (formElement, inputElement) => {
 
 // Функция, которая проверяет валидность поля
 const isValid = (formElement, inputElement) => {
-  const regex = /^[а-яёa-z -]*$/i;
-  if (!regex.test(inputElement.value) && inputElement.type === "text") {
+
+  if (inputElement.validity.patternMismatch) {
+    
     inputElement.setCustomValidity(inputElement.dataset.error);
   } else {
     inputElement.setCustomValidity("");

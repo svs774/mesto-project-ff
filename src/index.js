@@ -3,18 +3,19 @@ import {
   addCard,
   deleteCard,
   toggleLikeActive,
-  submitNewCardForm,
+  likesСounter,
 } from "./components/card";
 import { openPopup, closePopup } from "./components/modal";
 import { enableValidation, clearValidation } from "./components/validation";
 import {
+  addNewCard,
   getCards,
   getUzerData,
   patchEditProfile,
   changeAvatarUzer,
 } from "./components/api";
 
-const validationConfig = {
+export const validationConfig = {
   formSelector: ".popup__form",
   inputSelector: ".popup__input",
   submitButtonSelector: ".popup__button",
@@ -45,8 +46,11 @@ const openChangeAvatarBtn = document.querySelector(
 const popupChangeAvatar = document.querySelector(".popup_change_avatar");
 const linkAvatar = document.querySelector(".popup__input_avatar_type_url");
 const formAvatar = document.querySelector("#new-avatar");
+const placeName = document.querySelector(".popup__input_type_card-name");
+const linkCard = document.querySelector(".popup__input_type_url");
+const cardForm = document.querySelector("#new-place");
 
-let userId = null;
+export let userId = null;
 
 openProfileBtn.addEventListener("click", function () {
   nameInput.value = profileTitle.textContent;
@@ -79,11 +83,9 @@ function submitEditProfileForm(evt) {
   profileTitle.textContent = name;
   profileDescription.textContent = job;
 
-  const popupBtn = document.querySelectorAll(".popup__button");
-  const origTextBtn = popupBtn[0].textContent;
-  popupBtn.forEach((popupBtn) => {
-    popupBtn.textContent = "Сохранение...";
-  });
+  const popupBtn = evt.submitter;
+  const origTextBtn = popupBtn.textContent;
+  popupBtn.textContent = "Сохранение...";
 
   patchEditProfile(name, job)
     .then((res) => {
@@ -92,14 +94,15 @@ function submitEditProfileForm(evt) {
 
       nameInput.textContent = name;
       jobInput.textContent = about;
+
+      closePopup(popupProfile);
     })
-    .catch(console.error);
-
-  popupBtn.forEach((popupBtn) => {
-    popupBtn.textContent = origTextBtn;
-  });
-
-  closePopup(popupProfile);
+    .catch((err) => {
+      console.error(err);
+    })
+    .finally(() => {
+      popupBtn.textContent = origTextBtn;
+    });
 }
 
 formEditProfile.addEventListener("submit", submitEditProfileForm);
@@ -132,7 +135,7 @@ closeButtons.forEach((item) => {
 
 // Вызовем функцию
 
-enableValidation();
+enableValidation(validationConfig);
 
 Promise.all([getCards(), getUzerData()])
   .then(([cards, user]) => {
@@ -150,6 +153,7 @@ Promise.all([getCards(), getUzerData()])
         deleteCard,
         toggleLikeActive,
         openImagePopup,
+        likesСounter,
       });
 
       placesList.appendChild(card);
@@ -162,24 +166,54 @@ Promise.all([getCards(), getUzerData()])
 function submitChangeAvatarForm(evt) {
   evt.preventDefault();
 
-  const popupBtn = document.querySelectorAll(".popup__button");
-  const origTextBtn = popupBtn[0].textContent;
-  popupBtn.forEach((popupBtn) => {
-    popupBtn.textContent = "Сохранение...";
-  });
+  const popupBtn = evt.submitter;
+  const origTextBtn = popupBtn.textContent;
+  popupBtn.textContent = "Сохранение...";
 
   changeAvatarUzer(linkAvatar.value)
     .then((res) => {
       const link = res.avatar;
       avatarElement.src = link;
+
+      formAvatar.reset();
+
+      closePopup(popupChangeAvatar);
     })
-    .catch(console.error);
+    .catch((err) => {
+      console.error(err);
+    })
+    .finally(() => {
+      popupBtn.textContent = origTextBtn;
+    });
+}
 
-  popupBtn.forEach((popupBtn) => {
-    popupBtn.textContent = origTextBtn;
-  });
+// Функция добавления карточки с помощью формы
 
-  formAvatar.reset();
+function submitNewCardForm(evt, userId) {
+  evt.preventDefault();
 
-  closePopup(popupChangeAvatar);
+  const popupBtn = evt.submitter;
+  const origTextBtn = popupBtn.textContent;
+  popupBtn.textContent = "Сохранение...";
+
+  addNewCard(placeName.value, linkCard.value)
+    .then((res) => {
+      const newCard = addCard(res, userId, {
+        deleteCard,
+        toggleLikeActive,
+        openImagePopup,
+        likesСounter,
+      });
+
+      placesList.prepend(newCard);
+
+      closePopup(popupNewCard);
+      cardForm.reset();
+    })
+    .catch((err) => {
+      console.error(err);
+    })
+    .finally(() => {
+      popupBtn.textContent = origTextBtn;
+    });
 }
