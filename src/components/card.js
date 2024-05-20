@@ -1,12 +1,12 @@
 import { deleteCardFromServer, putLike, deleteLike } from "./api";
-import { userId } from "../index";
+
 
 // Функция создания карточки
 
 export function addCard(
   data,
   userId,
-  { deleteCard, toggleLikeActive, openImagePopup, likesСounter }
+  { deleteCard, toggleLikeActive, openImagePopup, }
 ) {
   const cardTemplate = document.querySelector("#card-template").content;
   const card = cardTemplate.cloneNode(true);
@@ -16,7 +16,7 @@ export function addCard(
   const deleteBtn = card.querySelector(".card__delete-button");
   const cardLikeBtn = card.querySelector(".card__like-button");
 
-  likesСounter(data, likeCountElement, cardLikeBtn);
+  likesСounter(data, likeCountElement, cardLikeBtn, userId);
 
   if (userId !== data.owner._id) {
     deleteBtn.remove();
@@ -24,7 +24,7 @@ export function addCard(
     deleteBtn.addEventListener("click", function (evt) {
       deleteCardFromServer(data._id)
         .then(() => {
-          console.log(data._id);
+          
           deleteCard(evt);
         })
         .catch(console.error);
@@ -49,12 +49,13 @@ export function addCard(
 //  Функция удаления карточки
 
 export function deleteCard(evt) {
+
   evt.target.closest(".places__item").remove();
 }
 
 // Функция счетчик лайков
 
-export function likesСounter(data, count, btn) {
+ function likesСounter(data, count, btn , userId) {
   const userIds = data.likes.map((user) => {
     return user._id;
   });

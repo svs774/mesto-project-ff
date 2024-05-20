@@ -15,7 +15,7 @@ import {
   changeAvatarUzer,
 } from "./components/api";
 
-export const validationConfig = {
+const validationConfig = {
   formSelector: ".popup__form",
   inputSelector: ".popup__input",
   submitButtonSelector: ".popup__button",
@@ -50,7 +50,7 @@ const placeName = document.querySelector(".popup__input_type_card-name");
 const linkCard = document.querySelector(".popup__input_type_url");
 const cardForm = document.querySelector("#new-place");
 
-export let userId = null;
+let userId = null;
 
 openProfileBtn.addEventListener("click", function () {
   nameInput.value = profileTitle.textContent;
@@ -107,7 +107,7 @@ function submitEditProfileForm(evt) {
 
 formEditProfile.addEventListener("submit", submitEditProfileForm);
 
-popupNewCard.addEventListener("submit", submitNewCardForm);
+popupNewCard.addEventListener("submit", (e) => submitNewCardForm(e, userId));
 
 popupChangeAvatar.addEventListener("submit", submitChangeAvatarForm);
 
@@ -153,7 +153,6 @@ Promise.all([getCards(), getUzerData()])
         deleteCard,
         toggleLikeActive,
         openImagePopup,
-        likesСounter,
       });
 
       placesList.appendChild(card);
@@ -202,7 +201,6 @@ function submitNewCardForm(evt, userId) {
         deleteCard,
         toggleLikeActive,
         openImagePopup,
-        likesСounter,
       });
 
       placesList.prepend(newCard);
